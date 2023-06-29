@@ -1095,6 +1095,12 @@ void linenoiseEditStop(struct linenoiseState *l) {
     printf("\n");
 }
 
+void linenoiseEditStopSilent(struct linenoiseState *l) {
+    linenoiseHide(l);
+    if (!isatty(l->ifd)) return;
+    disableRawMode(l->ifd);
+}
+
 /* This just implements a blocking loop for the multiplexed API.
  * In many applications that are not event-drivern, we can just call
  * the blocking linenoise API, wait for the user to complete the editing
