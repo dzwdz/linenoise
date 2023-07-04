@@ -220,6 +220,7 @@ static int isUnsupportedTerm(void) {
 static int enableRawMode(int fd) {
     struct termios raw;
 
+    if (rawmode) return 0; /* don't override orig_termios */
     if (!isatty(STDIN_FILENO)) goto fatal;
     if (!atexit_registered) {
         atexit(linenoiseAtExit);
@@ -707,10 +708,16 @@ void linenoiseHide(struct linenoiseState *l) {
         refreshMultiLine(l,REFRESH_CLEAN);
     else
         refreshSingleLine(l,REFRESH_CLEAN);
+    if (isatty(l->ifd)) {
+        disableRawMode(l->ifd);
+    }
 }
 
 /* Show the current line, when using the multiplexing API. */
 void linenoiseShow(struct linenoiseState *l) {
+    if (isatty(l->ifd)) {
+        enableRawMode(l->ifd);
+    }
     if (l->in_completion) {
         refreshLineWithCompletion(l,NULL,REFRESH_WRITE);
     } else {
@@ -1093,12 +1100,6 @@ void linenoiseEditStop(struct linenoiseState *l) {
     if (!isatty(l->ifd)) return;
     disableRawMode(l->ifd);
     printf("\n");
-}
-
-void linenoiseEditStopSilent(struct linenoiseState *l) {
-    linenoiseHide(l);
-    if (!isatty(l->ifd)) return;
-    disableRawMode(l->ifd);
 }
 
 /* This just implements a blocking loop for the multiplexed API.
