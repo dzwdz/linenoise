@@ -39,6 +39,8 @@
 #ifndef __LINENOISE_ENCODINGS_UTF8_H
 #define __LINENOISE_ENCODINGS_UTF8_H
 
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
