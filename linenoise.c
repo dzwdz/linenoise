@@ -493,12 +493,6 @@ static int completeLine(struct linenoiseState *ls, int c) {
                 }
                 c = 0;
                 break;
-            case 27: /* escape */
-                /* Re-show original buffer */
-                if (ls->completion_idx < lc.len) refreshLine(ls);
-                ls->in_completion = 0;
-                c = 0;
-                break;
             default:
                 /* Update buffer and return */
                 if (ls->completion_idx < lc.len) {
