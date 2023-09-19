@@ -484,7 +484,9 @@ static int completeLine(struct linenoiseState *ls, int c) {
     } else {
         switch(c) {
             case 9: /* tab */
-                if (ls->in_completion == 0) {
+                if (ls->pos != ls->len) {
+                    /* don't do anything */
+                } else if (ls->in_completion == 0) {
                     ls->in_completion = 1;
                     ls->completion_idx = 0;
                 } else {
