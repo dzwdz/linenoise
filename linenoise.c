@@ -1166,8 +1166,16 @@ char *linenoiseEditFeed(struct linenoiseState *l) {
                 if (0x40 <= seq[pos] && seq[pos] <= 0x7E) break;
             }
 
-            if (seq[1] == '3' && seq[2] == '~') {
+            if (seq[1] == '1' && seq[2] == '~') {
+                linenoiseEditMoveHome(l);
+            } else if (seq[1] == '3' && seq[2] == '~') {
                 linenoiseEditDelete(l);
+            } else if (seq[1] == '4' && seq[2] == '~') {
+                linenoiseEditMoveEnd(l);
+            } else if (seq[1] == '7' && seq[2] == '~') {
+                linenoiseEditMoveHome(l);
+            } else if (seq[1] == '8' && seq[2] == '~') {
+                linenoiseEditMoveEnd(l);
             } else if (seq[1] == '1' && seq[2] == ';' && seq[3] == '5') {
                 switch(seq[4]) {
                 case 'C': /* Ctrl+Right */
